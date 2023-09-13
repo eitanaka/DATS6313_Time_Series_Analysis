@@ -7,13 +7,16 @@ Purpose: Lab 1 Stationary & Non-Stationary
 
 # Import libraries
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller
 import sys
+import os
 
 # !!!! Please change the path to your local path
-sys.path.append(r'/Users/eitanaka/Documents/GW_Univ/FA2023/DATS6313_Time_Series_Analysis/DATS6313_Time_Series_Analysis/toolbox.py')
-from toolbox import ADF_Cal, kpss_test, Cal_rolling_mean_var, plot_rolling_statistics
+path_toolbox = os.path.join(os.getcwd(), 'toolbox.py')
+sys.path.append(path_toolbox)
+from toolbox import ADF_Cal, kpss_test, Cal_rolling_mean_var, plot_rolling_mean_var
 
 # =====================================================================================================
 # Question 1 Load the data set & Plot Sales, AdBudget and GPD versus time step in one graph.
@@ -53,20 +56,29 @@ display_statistics(df)
 # =========================================================================================================================
 # Question 3
 # Prove that the Sales, AdBudget and GDP in this time series dataset is stationary.
-# You need to plot the rolling mean and rolling variance in one graph using subplot [2x1] by creating a loop over the number of samples in the dataset and calculate the means & variances versus time.
-#
+# Hint: One way to show a process is stationary, is to plot the rolling mean and rolling variance versus number of samples which is accumulated through time.
+# If the rolling mean and rolling variance stabilizes once all samples are included, then this is an indication that a data set is stationary.
+# You need to plot the rolling mean and rolling variance in one graph using subplot [2x1] by creating a loop over the number of samples in the dataset
+# and calculate the means & variances versus time. Plot all means and variances and show that the means and variances are almost constant.
+# To perform this task, you need to create a loop with goes over number of observations in the dataset.
+# During the first iteration, the first sample will load and the mean and variance will be calculated.
+# During the second iteration, the first two observations will load, and the mean and variance will be calculated and will append to the previous mean and variance.
+# Repeat this process till the last observation is added the mean and variance will be calculated.
+# You can use the following command to bring new data sample at each iteration.
+# The plot the mean and variance over the time at the end. Save the above code under a function called ‘Cal-rolling-mean-var ’.
+# You will use this function several times throughout the course.
 # =========================================================================================================================
-
-# Plot the rolling mean and rolling variance
-plot_rolling_statistics(df['Sales'])
-plot_rolling_statistics(df['AdBudget'])
-plot_rolling_statistics(df['GDP'])
+# function to calculate rolling mean and variance are in toolbox.py
+plot_rolling_mean_var(df, 'Sales')
+plot_rolling_mean_var(df, 'AdBudget')
+plot_rolling_mean_var(df, 'GDP')
 
 # =========================================================================================================================
 # Question 5
 # Perform an ADF-test to check if the Sales, AdBudget and GDP are stationary.
 # =========================================================================================================================
 # ADF test
+# function to calculate ADF are in toolbox.py
 ADF_Cal(df['Sales'])
 ADF_Cal(df['AdBudget'])
 ADF_Cal(df['GDP'])
